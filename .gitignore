@@ -36,4 +36,3 @@ nosetests.xml
 .pydevproject
 *~
 *.swp
-dummy.py
