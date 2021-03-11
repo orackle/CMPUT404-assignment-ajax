@@ -74,16 +74,25 @@ def flask_post_json():
 @app.route("/")
 def hello():
     '''Return something coherent here.. perhaps redirect to /static/index.html '''
-
     return redirect("/static/index.html", code=302)
 
 # https://stackoverflow.com/questions/13081532/return-json-response-from-flask-view
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
     '''update the entities via this interface'''
-    data = flask_post_json()
-    print(data)
-    return None
+    raw_data = flask_post_json()
+    # print(raw_data)
+    for keys, values in raw_data:
+        # print(entity)
+        myWorld.update(entity,keys,values)
+
+    data = myWorld.get(entity)
+    response = app.response_class(
+        response=json.dumps(data),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 # https://stackoverflow.com/questions/13081532/return-json-response-from-flask-view
 @app.route("/world", methods=['POST','GET'])
